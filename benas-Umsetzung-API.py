@@ -17,10 +17,8 @@ Statuscodes (pro Endpunkt wie in der Spezifikation beschrieben):
   200, 201, 204, 400, 404 (zusätzlich Handler für 405/500)
 
 Starten:
-  $ python3 -m venv venv
-  $ source venv/bin/activate
-  $ pip install -r requirements.txt
-  $ python benas-Umsetzung-API.py
+  $ pip install flask
+  $ python todo_api.py
 
 Danach ist der Server auf http://127.0.0.1:5000 erreichbar.
 
