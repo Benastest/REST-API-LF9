@@ -87,6 +87,12 @@ def find_entry(entry_id: str) -> Optional[Dict]:
 # Endpunkte gemäß Spezifikation
 # ---------------------------------------------------------------------------
 
+// Zum testen ob die API läuft, einfacher Endpunkt auf "/"
+@app.route("/")
+def home():
+    return {"message": "API läuft!"}
+
+
 @app.route("/todo-list", methods=["GET"])
 def get_all_lists():
     """Liefert alle Todo-Listen zurück (200)."""
