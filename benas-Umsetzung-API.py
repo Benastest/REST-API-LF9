@@ -87,10 +87,9 @@ def find_entry(entry_id: str) -> Optional[Dict]:
 # Endpunkte gemäß Spezifikation
 # ---------------------------------------------------------------------------
 
-// Zum testen ob die API läuft, einfacher Endpunkt auf "/"
 @app.route("/")
-def home():
-    return {"message": "API läuft!"}
+def frontend():
+    return send_from_directory("Frontend", "index.html")
 
 
 @app.route("/todo-list", methods=["GET"])
