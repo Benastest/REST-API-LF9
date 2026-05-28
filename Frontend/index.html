@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Todo App</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial;
+            background-color: #3a3a3a;
+        }
+
+        /* HEADER */
+        .header-bar {
+            background-color: #3a3a3a;
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        /* LAYOUT */
+        .container {
+            display: flex;
+            height: calc(100vh - 90px);
+            gap: 10px;
+            padding: 10px;
+        }
+
+        .column {
+            flex: 1;
+            background-color: #eeeeee;
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .item {
+            background: white;
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 5px;
+        }
+
+        /* TERMINAL */
+        .terminal {
+            background-color: #2e2e2e;
+            padding: 10px;
+            border-radius: 8px;
+            flex: 1;
+            overflow-y: auto;
+            margin-top: 15px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+
+        /* ✅ HEADER sauber + zentriert */
+        .terminal-header {
+            color: white;
+            font-size: 18px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #555;
+            padding-bottom: 5px;
+            text-align: center;
+        }
+
+        /* ✅ Abstand für Logs */
+        #apiLog {
+            margin-top: 20px;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<div class="header-bar">
+    Benas ToDos Umsetzung
+</div>
+
+<div class="container">
+
+    <!-- LISTEN -->
+    <div class="column">
+        <div class="section-header">
+            <h3>Listen</h3>
+            <button onclick="createList()">➕</button>
+        </div>
+
+        <ul id="lists" class="list"></ul>
+    </div>
+
+    <!-- TODOS -->
+    <div class="column">
+        <div class="section-header">
+            <h3>Todos</h3>
+            <button onclick="createTodo()">➕</button>
+        </div>
+
+        <ul id="todos" class="list"></ul>
+    </div>
+
+    <!-- BESCHREIBUNG + TERMINAL -->
+    <div class="column">
+
+        <div>
+            <h3>Beschreibung</h3>
+            <p id="description">Wähle ein Todo aus</p>
+        </div>
+
+        <div class="terminal">
+
+            <div class="terminal-header">
+                API Log
+            </div>
+
+            <div id="apiLog"></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+const BASE_URL = "http://localhost:5000";
+
+let selectedListId = null;
+
+
+// API LOG
+function logApi(method, url, status) {
+
+    const log = document.getElementById("apiLog");
+
+    let line = document.createElement("div");
+
+    let now = new Date();
+    let time =
+        now.getHours().toString().padStart(2, '0') + ":" +
+        now.getMinutes().toString().padStart(2, '0') + ":" +
+        now.getSeconds().toString().padStart(2, '0');
+
+    let color;
+
+    if (status >= 200 && status < 300) {
+        color = "#4caf50";
+    } else if (status >= 400) {
+        color = "#e53935";
+    } else {
+        color = "#fbc02d";
+    }
+
+    line.style.color = color;
+
+    line.textContent =
+        "[" + time + "] " +
+        "[" + method + "] " +
+        url +
+        " → " +
+        status;
+
+    log.prepend(line);
+}
+
+
+// LISTEN
+function loadLists() {
+    fetch(BASE_URL + "/todo-list")
+        .then(res => {
+            logApi("GET", "/todo-list", res.status);
+            return res.json();
+        })
+        .then(data => {
+            let ul = document.getElementById("lists");
+            ul.innerHTML = "";
+
+            data.forEach(list => {
+
+                let li = document.createElement("li");
+                li.className = "item";
+
+                let text = document.createElement("span");
+                text.textContent = list.name;
+
+                li.onclick = () => {
+                    selectedListId = list.id;
+                    loadTodos();
+                };
+
+                let btns = document.createElement("div");
+                btns.className = "buttons";
+
+                let editBtn = document.createElement("button");
+                editBtn.textContent = "✏️";
+                editBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    let newName = prompt("Neuer Name:", list.name);
+                    if (newName) updateList(list.id, newName);
+                };
+
+                let delBtn = document.createElement("button");
+                delBtn.textContent = "❌";
+                delBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    if (confirm("Liste löschen?")) {
+                        deleteList(list.id);
+                    }
+                };
+
+                btns.appendChild(editBtn);
+                btns.appendChild(delBtn);
+
+                li.appendChild(text);
+                li.appendChild(btns);
+                ul.appendChild(li);
+            });
+        });
+}
+
+
+// TODOS
+function loadTodos() {
+    fetch(BASE_URL + "/todo-list/" + selectedListId)
+        .then(res => {
+            logApi("GET", "/todo-list/" + selectedListId, res.status);
+            return res.json();
+        })
+        .then(data => {
+
+            let ul = document.getElementById("todos");
+            ul.innerHTML = "";
+
+            data.forEach(todo => {
+
+                let li = document.createElement("li");
+                li.className = "item";
+
+                let text = document.createElement("span");
+                text.textContent = todo.name;
+
+                li.onclick = () => {
+                    document.getElementById("description").textContent = todo.description;
+                };
+
+                let btns = document.createElement("div");
+                btns.className = "buttons";
+
+                let editBtn = document.createElement("button");
+                editBtn.textContent = "✏️";
+                editBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    let newName = prompt("Neuer Name:", todo.name);
+                    let newDesc = prompt("Neue Beschreibung:", todo.description);
+
+                    if (newName && newDesc) {
+                        updateTodo(todo.id, newName, newDesc);
+                    }
+                };
+
+                let delBtn = document.createElement("button");
+                delBtn.textContent = "❌";
+                delBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    deleteTodo(todo.id);
+                };
+
+                btns.appendChild(editBtn);
+                btns.appendChild(delBtn);
+
+                li.appendChild(text);
+                li.appendChild(btns);
+                ul.appendChild(li);
+            });
+        });
+}
+
+
+// CREATE LIST
+function createList() {
+    let name = prompt("Listenname:");
+
+    fetch(BASE_URL + "/todo-list", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: name })
+    })
+    .then(res => {
+        logApi("POST", "/todo-list", res.status);
+        loadLists();
+    });
+}
+
+
+// DELETE LIST
+function deleteList(id) {
+    fetch(BASE_URL + "/todo-list/" + id, {
+        method: "DELETE"
+    })
+    .then(res => {
+        logApi("DELETE", "/todo-list/" + id, res.status);
+        selectedListId = null;
+        document.getElementById("todos").innerHTML = "";
+        loadLists();
+    });
+}
+
+
+// CREATE TODO
+function createTodo() {
+    if (!selectedListId) {
+        alert("Bitte Liste auswählen");
+        return;
+    }
+
+    let name = prompt("Name:");
+    let desc = prompt("Beschreibung:");
+
+    fetch(BASE_URL + "/todo-list/" + selectedListId, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: name, description: desc })
+    })
+    .then(res => {
+        logApi("POST", "/todo-list/" + selectedListId, res.status);
+        loadTodos();
+    });
+}
+
+
+// UPDATE TODO
+function updateTodo(id, name, desc) {
+    fetch(BASE_URL + "/todo-list/entry/" + id, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: name, description: desc })
+    })
+    .then(res => {
+        logApi("PATCH", "/todo-list/entry/" + id, res.status);
+        loadTodos();
+    });
+}
+
+
+// DELETE TODO
+function deleteTodo(id) {
+    fetch(BASE_URL + "/todo-list/entry/" + id, {
+        method: "DELETE"
+    })
+    .then(res => {
+        logApi("DELETE", "/todo-list/entry/" + id, res.status);
+        loadTodos();
+    });
+}
+
+
+// INIT
+loadLists();
+
+</script>
+
+</body>
+</html>
