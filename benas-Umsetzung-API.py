@@ -31,7 +31,7 @@ Hinweis:
 from __future__ import annotations
 import uuid
 from typing import Dict, List, Optional
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 
 # ---------------------------------------------------------------------------
 # Flask-App initialisieren
