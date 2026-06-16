@@ -215,6 +215,7 @@ Danach erreichbar unter:        http://localhost:5000
 
 ## 📁 Projektstruktur
 
+```
 REST-API-LF9/
 │
 ├── benas-Umsetzung-API.py
@@ -223,6 +224,7 @@ REST-API-LF9/
 ├── Frontend/
 │   └── index.html
 ├── README.md
+```
 
 ---
 
