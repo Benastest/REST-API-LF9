@@ -1,131 +1,240 @@
 # REST-API-LF9
 
-Dieses Projekt enthält eine selbst entwickelte REST-API für eine einfache Todo-Liste. Die API wurde mit Flask in Python implementiert und ermöglicht grundlegende CRUD-Operationen (Create, Read, Update, Delete).
+Dieses Projekt enthält eine selbst entwickelte REST-API für eine einfache Todo-Anwendung.  
+Die API wurde mit Python (Flask) umgesetzt und ermöglicht das Erstellen, Anzeigen, Bearbeiten und Löschen von Todo-Listen und Einträgen.
 
-`beispiel-server.py` ist nur eine beispielhafte Umsetzung die wir von unserer lehrkraft bekommen haben um eine Orientierung zu bekommen.
+Zusätzlich enthält das Projekt ein einfaches Frontend (`index.html`), über das die API im Browser genutzt werden kann
+
+
+## 🧩 Funktion der Anwendung
+
+Die Anwendung verwaltet mehrere Todo-Listen.
+
+Jede Liste kann mehrere Einträge enthalten.  
+Einträge bestehen aus einem Namen und einer Beschreibung.
+
+Es ist möglich:
+- neue Listen zu erstellen
+- Einträge hinzuzufügen
+- Einträge zu bearbeiten
+- Einträge zu löschen
+
 
 ---
 
-## Technologien
+## 🚀 Quick Start (Kurzversion)
 
-- Python
-- Flask
-- Docker
-- VirtualBox (Ubunto Linux)
+```bash
+sudo apt update
+sudo apt install git docker.io -y
+git clone https://github.com/Benastest/REST-API-LF9.git
+cd REST-API-LF9
+sudo docker build -t rest-api .
+sudo docker run -p 5000:5000 rest-api
+```
 
----
-
-## Umgebung (Virtual Machine)
-
-Die Anwendung wurde in einer Ubuntu VM innerhalb von VirtualBox betrieben.
-Der zugriff erfolgt über Port-Weiterleitung von der VM zum Hostsystem.
-
-Beispiel:
-- VM Port: 5000
-- Host Port: 5000
-
-Aufruf im Browser:
+Danach im Browser:
 http://localhost:5000
 
 ---
 
-## Installation
+## Voraussetzungen
 
-git clone https://github.com/Benastest/REST-API-LF9
-cd REST-API-LF9
+Es wird davon ausgegangen, dass:
 
-Virtuelle Umgebung erstellen
-
-python3 -m venv .venv
-source .venv/bin/activate
-
-Abhängigkeiten installieren:
-
-pip install -r requirements.txt
+- eine virtuelle Maschine (VM) bereits erstellt wurde  
+- Ubuntu installiert ist (z.B. Ubuntu Server)  
+- ein Benutzer erstellt wurde  
+- die VM gestartet ist und die Konsole geöffnet ist  
 
 ---
 
+## ✅ KOMPLETTE SCHRITT-FÜR-SCHRITT ANLEITUNG
 
-## Starten (ohne Docker)
+Alle folgenden Befehle werden **in der VM-Konsole** eingegeben.
+
+---
+
+### 🔹 1. System aktualisieren
+
+```bash
+sudo apt update
+sudo apt upgrade -y
+```
+
+---
+
+### 🔹 2. Git installieren
+
+```bash
+sudo apt install git -y
+```
+
+---
+
+### 🔹 3. Repository herunterladen (kein Login nötig)
+
+```bash
+git clone https://github.com/Benastest/REST-API-LF9.git
+cd REST-API-LF9
+```
+
+---
+
+### 🔹 4. Docker installieren
+```bash
+sudo apt install docker.io -y
+```
+---
+
+### 🔹 5. Docker starten
+
+```bash
+sudo systemctl start docker
+```
+
+# Optional (Automatischer Start):
+
+```bash
+sudo systemctl enable docker
+```
+
+---
+
+### 🔹 6. Docker Funktion testen
+
+```bash
+docker --version
+```
+
+---
+
+### 🔹 7. Docker Image bauen
+
+```bash
+sudo docker build -t rest-api .
+```
+
+---
+
+### 🔹 8. Docker Container starten
+
+```bash
+sudo docker run -p 5000:5000 rest-api
+```
+
+➡️ Wichtig: Dieser Befehl blockiert die Konsole (das ist normal)
+
+
+Alternative (im Hintergrund starten):
+
+```bash
+sudo docker run -d -p 5000:5000 rest-api
+```
+
+- Der Server läuft standardmäßig auf Port 5000
+
+---
+
+### 🔹 Zugriff auf die Anwendung
+
+Auf dem Host-PC öffnen (nicht in der VM!)
+Im Browser öffnen:          http://localhost:5000
+
+---
+
+### 🔹 Frontend (zusätzliche Funktion)
+
+
+Dieses Projekt enthält zusätzlich ein einfaches Frontend, das automatisch geladen wird.
+
+Beim Aufruf von http://localhost:5000/ wird automatisch die Datei Frontend/index.html geladen
+
+👉 Das Frontend befindet sich im Ordner:        Frontend/index.html
+👉 Über die Oberfläche können API-Aufrufe direkt im Browser durchgeführt werden, ohne zusätzliche Tools wie curl.
+
+Dies dient zur einfacheren Bedienung und Demonstration der API.
+
+---
+
+## ⚠️ Voraussetzung (VirtualBox Port-Weiterleitung)
+Damit der Zugriff funktioniert, muss folgende Regel gesetzt sein:
+Einstellung:            Wert:
+Host-Port               5000
+Gast-Port               5000
+
+---
+
+### 🔹 API testen
+
+Im Browser:                 http://localhost:5000/todo-list
+
+Mit curl in der VM:         curl http://localhost:5000/todo-list
+
+---
+
+## 📌 API-Endpunkte
+
+Todo-Listen:
+GET    /todo-list
+POST   /todo-list
+GET    /todo-list/{list_id}
+DELETE /todo-list/{list_id}
+
+Todo-Einträge
+POST   /todo-list/{list_id}
+PATCH  /todo-list/entry/{entry_id}
+DELETE /todo-list/entry/{entry_id}
+
+
+---
+
+### 📄 Beispiel: Neue Liste erstellen
+
+```bash
+curl -X POST http://localhost:5000/todo-list \
+-H "Content-Type: application/json" \
+-d '{"name":"Einkauf"}'
+```
+
+---
+
+### ▶️ Alternative: Start ohne Docker
+
+```bash
+sudo apt install python3 python3-pip -y
+
+pip3 install -r requirements.txt
 
 python3 benas-Umsetzung-API.py
+```
 
-Die API ist anschließend erreichbar unter:
-http://127.0.0.1:5000
-
----
-
-## Starten (mit Docker)
-
-Docker Image erstellen:
-
-docker build -t benas-rest-api .
-
-Container starten:
-docker run -p 5000:5000 benas-rest-api
-
-Die API ist erreichbar unter:
-http://locakhost:5000
+Danach erreichbar unter:        http://localhost:5000
 
 ---
 
-## API-Endpunkte
-
-Die Anwendung stellt eine REST-API bereit und gibt Daten im JSON-Format zurück. Es gibt keine grafische Benutzeroberfläche.
-
-### Beispiel-Endpunkte
-
-GET /
-=> Prüft, ob die API läuft
-
-GET /items
-=> Alle Einträge anzeigen
-
-POST /items
-=> Neuen Eintrag erstellen
-
-PUT /items/<id>
-=> Eintrag aktualisieren
-
-DELETE /items/<id>
-=> Eintrag löschen
-
----
-
-## API testen
-
-Im Browser:
-http://localhost:5000/items
-
-Mit curl:
-curl http://localhost:5000/items
-
----
-
-## Projektstruktur
+## 📁 Projektstruktur
 
 REST-API-LF9/
-|- benas-Umsetzung-API.py       # Hauptimplementierung der API
-|- beispiel-server.py           # Vorlage von der Lehrkraft
-|- requirements.txt             # Python-Abhängigkeiten
-|- README.md                    # Dokumentation
+│
+├── benas-Umsetzung-API.py
+├── requirements.txt
+├── Dockerfile
+├── Frontend/
+│   └── index.html
+├── README.md
 
 ---
 
+## ⚠️ Hinweise
 
-## Hinweise
-
-- DIE API ist eine reine Backend-Anwendung ohne Benutzeroberfläche
-- Daten werden im JSON-Format verarbeitet
-- Die Anwednug wurde in einer Virtual Machine (Ubuntu) betrieben
-- Zugriff erfolgt über VirtualBox Port-Forwarding
-- Docker wird optional zur Containerisierung verwendet
-- Der Ordner `.venv` oder `venv` ist nicht Teil des Repositories (.gitignore)
-- `requirements.txt` enthält die benötigten Python-Abhängigkeiten.
-- `.gitignore` sorgt dafür, dass lokale virtuelle Umgebungen und temporäre Dateien nicht im Repository landen.
+- Daten werden nur im Arbeitsspeicher gespeichert
+- Beim Neustart gehen alle Daten verloren
+- API liefert JSON-Daten zurück
+- Frontend dient zur einfachen Bedienung im Browser
 
 ---
 
-# Autor
+## 👤 Autor
 
 Benas Simanavicius
