@@ -228,6 +228,20 @@ REST-API-LF9/
 
 ---
 
+## 📌 Weitere Dateien
+
+Im Repository befinden sich zusätzlich weitere Dateien und Ordner, die nicht direkt für die Ausführung der Anwendung benötigt werden:
+
+- `venv/` → Lokale Python-Umgebung (wird nicht benötigt, da Docker verwendet wird). Wird nicht ins GitHub Repository hochgeladen (durch .gitignore).
+- `.gitignore` → Legt fest, welche Dateien nicht ins Repository hochgeladen werden.
+- `.dockerignore` → Verhindert, dass unnötige Dateien in das Docker Image kopiert werden.
+- `beispiel-server.py` → Beispielcode aus dem Unterricht (nicht Teil der finalen Umsetzung).
+
+Diese Dateien dienen der Entwicklung und Organisation, sind aber für den Betrieb der API nicht notwendig.
+
+
+---
+
 ## ⚠️ Hinweise
 
 - Daten werden nur im Arbeitsspeicher gespeichert
