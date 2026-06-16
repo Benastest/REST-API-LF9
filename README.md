@@ -226,9 +226,8 @@ REST-API-LF9/
 ├── README.md
 ```
 
----
 
-## 📌 Weitere Dateien
+### 📌 Weitere Dateien
 
 Im Repository befinden sich zusätzlich weitere Dateien und Ordner, die nicht direkt für die Ausführung der Anwendung benötigt werden:
 
