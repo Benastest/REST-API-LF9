@@ -3,3 +3,5 @@ __pycache__/
 *.pyc
 .git/
 Todolistenverwaltung_Benas.yaml
+LICENSE
+README.md

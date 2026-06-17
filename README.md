@@ -224,6 +224,8 @@ REST-API-LF9/
 ├── Frontend/
 │   └── index.html
 ├── README.md
+├── Todolistenverwaltung_Benas.yaml
+├── LICENSE
 ```
 
 
@@ -235,6 +237,7 @@ Im Repository befinden sich zusätzlich weitere Dateien und Ordner, die nicht di
 - `.gitignore` → Legt fest, welche Dateien nicht ins Repository hochgeladen werden.
 - `.dockerignore` → Verhindert, dass unnötige Dateien in das Docker Image kopiert werden.
 - `beispiel-server.py` → Beispielcode aus dem Unterricht (nicht Teil der finalen Umsetzung).
+- `Todolistenverwaltung_Benas.yaml` → Beispielcode aus dem Unterricht (nicht Teil der finalen Umsetzung).
 
 Diese Dateien dienen der Entwicklung und Organisation, sind aber für den Betrieb der API nicht notwendig.
 
@@ -253,3 +256,13 @@ Diese Dateien dienen der Entwicklung und Organisation, sind aber für den Betrie
 ## 👤 Autor
 
 Benas Simanavicius
+
+
+---
+
+## 📄 Lizenz
+
+Dieses Projekt steht unter der Apache License 2.0.
+
+Weitere Informationen sind in der Datei `LICENSE` enthalten:
+http://www.apache.org/licenses/LICENSE-2.0
