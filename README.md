@@ -150,8 +150,7 @@ Dieses Projekt enthält zusätzlich ein einfaches Frontend, das automatisch gela
 
 Beim Aufruf von http://localhost:5000/ wird automatisch die Datei Frontend/index.html geladen
 
-👉 Das Frontend befindet sich im Ordner:        Frontend/index.html
-👉 Über die Oberfläche können API-Aufrufe direkt im Browser durchgeführt werden, ohne zusätzliche Tools wie curl.
+👉 Das Frontend befindet sich im Ordner "Frontend/index.html". Über die Oberfläche können API-Aufrufe direkt im Browser durchgeführt werden, ohne zusätzliche Tools wie curl.
 
 Dies dient zur einfacheren Bedienung und Demonstration der API.
 
@@ -159,9 +158,7 @@ Dies dient zur einfacheren Bedienung und Demonstration der API.
 
 ## ⚠️ Voraussetzung (VirtualBox Port-Weiterleitung)
 Damit der Zugriff funktioniert, muss folgende Regel gesetzt sein:
-Einstellung:            Wert:
-Host-Port               5000
-Gast-Port               5000
+Host und Gast-Port:          5000
 
 ---
 
